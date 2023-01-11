@@ -1,0 +1,152 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-deployment-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test
+  template:
+    metadata:
+      labels:
+        app: test
+        version: v1.0.1
+      # annotations:
+      #   prometheus.io/scrape: "true"
+      #   prometheus.io/path: /metrics
+      #   prometheus.io/port: "8080"
+    spec:
+      containers:
+        - name: test
+          image: yuexclusive/test:latest
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: config-volume
+              mountPath: /app/config.toml
+              subPath: config.toml
+            - name: log
+              mountPath: /app/log
+
+        - name: filebeat
+          image: docker.elastic.co/beats/filebeat:8.0.0
+          volumeMounts:
+            - name: config-volume
+              mountPath: /usr/share/filebeat/filebeat.yml
+              subPath: filebeat.yml
+            - name: log
+              mountPath: /usr/share/filebeat/files
+            
+      volumes:
+        - name: config-volume
+          configMap:
+            name: test-configmap
+        - name: log
+          emptyDir: {}
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-deployment-v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test
+  template:
+    metadata:
+      labels:
+        app: test
+        version: v1.0.2
+    spec:
+      containers:
+        - name: test
+          image: yuexclusive/test:latest
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: config-volume
+              mountPath: /app/config.toml
+              subPath: config.toml
+            - name: log
+              mountPath: /app/log
+
+        - name: filebeat
+          image: docker.elastic.co/beats/filebeat:8.0.0
+          volumeMounts:
+            - name: config-volume
+              mountPath: /usr/share/filebeat/filebeat.yml
+              subPath: filebeat.yml
+            - name: log
+              mountPath: /usr/share/filebeat/files
+            
+      volumes:
+        - name: config-volume
+          configMap:
+            name: test-configmap
+        - name: log
+          emptyDir: {}
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-deployment-v3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test
+  template:
+    metadata:
+      labels:
+        app: test
+        version: v1.0.3
+    spec:
+      containers:
+        - name: test
+          image: yuexclusive/test:latest
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: config-volume
+              mountPath: /app/config.toml
+              subPath: config.toml
+            - name: log
+              mountPath: /app/log
+
+        - name: filebeat
+          image: docker.elastic.co/beats/filebeat:8.0.0
+          volumeMounts:
+            - name: config-volume
+              mountPath: /usr/share/filebeat/filebeat.yml
+              subPath: filebeat.yml
+            - name: log
+              mountPath: /usr/share/filebeat/files
+            
+      volumes:
+        - name: config-volume
+          configMap:
+            name: test-configmap
+        - name: log
+          emptyDir: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: test
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: test
+
+      

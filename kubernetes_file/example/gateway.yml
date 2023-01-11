@@ -1,0 +1,32 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: test-gateway
+spec:
+  selector:
+    istio: ingressgateway # use Istio default gateway implementation
+  servers:
+  - port:
+      number: 80
+      name: http-80
+      protocol: HTTP
+    hosts:
+    - "*.example.com"
+  - port:
+      number: 443
+      name: https-443-2
+      protocol: HTTPS
+    hosts:
+    - "*.test.example.com"
+    tls:
+      mode: SIMPLE
+      credentialName: test-credential-2 # must be the same as secret
+  - port:
+      number: 443
+      name: https-443
+      protocol: HTTPS
+    hosts:
+    - "*.example.com"
+    tls:
+      mode: SIMPLE
+      credentialName: -2 # must be the same as secret

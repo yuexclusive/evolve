@@ -1,0 +1,15 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: meilisearch-gateway
+  namespace: stateful
+spec:
+  selector:
+    istio: ingressgateway # use Istio default gateway implementation
+  servers:
+    - port:
+        number: 7700
+        name: tcp-meilisearch
+        protocol: tcp
+      hosts:
+        - "*"

@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test-configmap
+data:
+  config.toml: |
+    [config]
+    name = "test.srv"
+    host = ""
+    port = "8080"
+
+    [config.postgre]
+    address = "host=127.0.0.1 port=5432 user=postgres password=123456 sslmode=disable dbname=evolve"
+
+    [config.es]
+    address = "http://127.0.0.1:9200"
+
+    [config.etcd]
+    address = ["127.0.0.1:2379"]
+    lease = 5
+
+    [config.jaeger]
+    address = "127.0.0.1:6831"
+
+    [config.log]
+    path = "./log"
+    mode = "develop"
+
+    [config.mongo]
+    address = "127.0.0.1:27017"
+
+    [config.nats]
+    address = "127.0.0.1:4222"
+
+
+    [config.redis]
+    address = "127.0.0.1:6379"
+    cachedb = ""
+    password = ""
+    poolSize = ""
+
+    [config.tls]
+    caCertFile = "/Users/liuyu/golang/utils/ssl/server_ca_cert.pem"
+    certFile = "/Users/liuyu/golang/utils/ssl/server_cert.pem"
+    keyFile = "/Users/liuyu/golang/utils/ssl/server_key.pem"
+    serverNameOverride = "test.example.com"
+
+  
+  filebeat.yml: |
+    filebeat.inputs:
+
+    - type: filestream
+      enabled: true
+      paths:
+        - /usr/share/filebeat/files/*.log
+    filebeat.config.modules:
+      path: ${path.config}/modules.d/*.yml
+      reload.enabled: false
+
+
+    setup.template.settings:
+      index.number_of_shards: 1
+      #index.codec: best_compression
+      #_source.enabled: false
+
+    output.logstash:
+      # The Logstash hosts
+      hosts: ["logstash.stateless:5044"]
+
+    # output.elasticsearch:
+    #   # Array of hosts to connect to.
+    #   hosts: ["elasticsearch:9200"]
+
+    processors:
+      - add_host_metadata:
+          when.not.contains.tags: forwarded
+      - add_cloud_metadata: ~
+      - add_docker_metadata: ~
+      - add_kubernetes_metadata: ~

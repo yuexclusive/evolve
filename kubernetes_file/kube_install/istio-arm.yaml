@@ -1,0 +1,54 @@
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+metadata:
+  namespace: istio-system
+  name: example-istiocontrolplane
+spec:
+  hub: docker.io/querycapistio
+  profile: demo
+  components:
+    pilot:
+      k8s: # each components have to set this
+        affinity: &affinity
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: kubernetes.io/arch
+                      operator: In
+                      values:
+                        - arm64
+                        - amd64
+    egressGateways:
+      - name: "istio-egressgateway"
+        k8s:
+          affinity: *affinity
+    ingressGateways:
+      - name: "istio-ingressgateway"
+        k8s:
+          affinity: *affinity
+          service:
+            ports:
+              - nodePort: 30701
+                port: 80
+                targetPort: 8080
+                name: n1
+              - nodePort: 30702
+                port: 443
+                targetPort: 8443
+                name: n2
+              - nodePort: 30703
+                port: 6379
+                name: redis
+              - nodePort: 30704
+                port: 5432
+                name: postgres
+              - nodePort: 30705
+                port: 7700
+                name: meilisearch
+              - nodePort: 30706
+                port: 9092
+                name: kafka
+              - nodePort: 30707
+                port: 3306
+                name: mysql

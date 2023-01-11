@@ -1,0 +1,15 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: fluvio-gateway
+  namespace: fluvio
+spec:
+  selector:
+    istio: ingressgateway # use Istio default gateway implementation
+  servers:
+    - port:
+        number: 30003
+        name: tcp-fluvio
+        protocol: tcp
+      hosts:
+        - "*"

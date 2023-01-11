@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: stateful
+  name: postgres-config
+data:
+  evolve.sql: |
+    drop database if exists evolve;
+    create database evolve;

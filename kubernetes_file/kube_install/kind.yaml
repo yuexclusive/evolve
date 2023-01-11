@@ -1,0 +1,52 @@
+apiVersion: kind.x-k8s.io/v1alpha4
+kind: Cluster
+name: my-k8s
+nodes:
+  - role: control-plane
+    extraMounts:
+      - hostPath: /Users/yu/docker_volumes
+        containerPath: /www
+      - hostPath: /var/run/docker.sock
+        containerPath: /var/run/docker.sock
+    extraPortMappings:
+      - containerPort: 30701
+        hostPort: 80
+        listenAddress: "0.0.0.0"
+        protocol: TCP
+      - containerPort: 30702
+        hostPort: 443
+        listenAddress: "0.0.0.0"
+        protocol: TCP
+        # for redis
+      - containerPort: 30703
+        hostPort: 6379
+        listenAddress: "0.0.0.0"
+        protocol: TCP
+        # for postgres
+      - containerPort: 30704
+        hostPort: 5432
+        listenAddress: "0.0.0.0"
+        protocol: TCP
+        # for meilisearch
+      - containerPort: 30705
+        hostPort: 7700
+        listenAddress: "0.0.0.0"
+        protocol: TCP
+        # for kafka
+      - containerPort: 30706
+        hostPort: 9092
+        listenAddress: "0.0.0.0"
+        protocol: TCP
+      - containerPort: 30707
+        hostPort: 3306
+        listenAddress: "0.0.0.0"
+        protocol: TCP
+        # for fluvio
+      - containerPort: 30003
+        hostPort: 30003
+        listenAddress: "0.0.0.0"
+        protocol: TCP
+      - containerPort: 30004
+        hostPort: 30004
+        listenAddress: "0.0.0.0"
+        protocol: TCP

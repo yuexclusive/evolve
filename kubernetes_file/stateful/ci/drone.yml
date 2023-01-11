@@ -1,0 +1,90 @@
+# docker run \
+#   --volume=/var/lib/drone:/data \
+#   --env=DRONE_GITEA_SERVER=https://try.gitea.io \
+#   --env=DRONE_GITEA_CLIENT_ID=05136e57d80189bef462 \
+#   --env=DRONE_GITEA_CLIENT_SECRET=7c229228a77d2cbddaa61ddc78d45e \
+#   --env=DRONE_RPC_SECRET=super-duper-secret \
+#   --env=DRONE_SERVER_HOST=drone.company.com \
+#   --env=DRONE_SERVER_PROTO=https \
+#   --publish=80:80 \
+#   --publish=443:443 \
+#   --restart=always \
+#   --detach=true \
+#   --name=drone \
+#   drone/drone:2
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: stateful
+  name: drone
+spec:
+  serviceName: drone
+  selector:
+    matchLabels:
+      app: drone
+  template:
+    metadata:
+      labels:
+        app: drone
+    spec:
+      containers:
+        - name: drone
+          image:  drone/drone:2
+          ports: 
+            - containerPort: 80
+          env:
+            # # for gitea
+            # - name: DRONE_GITEA_SERVER
+            #   value: http://gitea:3000
+            # - name: DRONE_GITEA_CLIENT_ID
+            #   value: 16e23fef-3192-44cb-99ca-cddd7a80cadc
+            # - name: DRONE_GITEA_CLIENT_SECRET
+            #   value: CDQrIZoduW2Si0zxPTviDGcZa2ipxqErfVEefNSHY32z
+            # - name: DRONE_RPC_SECRET
+            #   value: 123456key
+            # - name: DRONE_SERVER_HOST
+            #   value: drone.example.com:8080
+            # - name: DRONE_SERVER_PROTO
+            #   value: http
+
+            # for github
+            - name: DRONE_GITHUB_CLIENT_ID
+              value: 4aa1f58ba92983f4995a
+            - name: DRONE_GITHUB_CLIENT_SECRET
+              value: c9b18274feeaa1752e9f81715d30745c70c1628e
+            - name: DRONE_RPC_SECRET
+              value: 123456key
+            - name: DRONE_SERVER_HOST
+              value: 49.235.119.76:8080
+            - name: DRONE_SERVER_PROTO
+              value: http
+            - name: DRONE_USER_CREATE
+              value: username:yuexclusive,admin:true
+          volumeMounts:
+            - name: drone
+              mountPath: /data
+  volumeClaimTemplates:
+  - metadata:
+      name: drone
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "standard"
+      resources:
+        requests:
+          storage: 1Gi
+
+--- 
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: stateful
+  name: drone
+spec:
+  selector:
+    app: drone
+  ports:
+    - port: 8080
+      targetPort: 80
+

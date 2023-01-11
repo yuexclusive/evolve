@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: website
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: website
+  template:
+    metadata:
+      labels:
+        app: website
+        version: v1.0.1
+    spec:
+      containers:
+        - name: website
+          image: yuexclusive/website:latest
+          ports:
+            - containerPort: 1313
+          volumeMounts:
+            - name: static
+              mountPath: /work/quickstart/static
+            - name: content
+              mountPath: /work/quickstart/content
+            - name: configfile
+              mountPath: /work/quickstart/config.toml
+      volumes:
+        - name: static
+          hostPath:
+            # directory location on host
+            path: /www/website/static
+            # this field is optional
+            type: DirectoryOrCreate 
+        - name: content
+          hostPath:
+            # directory location on host
+            path: /www/website/content
+            # this field is optional
+            type: DirectoryOrCreate
+        - name: configfile
+          hostPath:
+            # directory location on host
+            path: /www/website/config.toml
+            # this field is optional
+            type: FileOrCreate
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: website
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 1313
+  selector:
+    app: website

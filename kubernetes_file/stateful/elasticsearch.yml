@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: stateful
+  name: elasticsearch
+spec:
+  serviceName: "elasticsearch"
+  selector:
+    matchLabels:
+      app: elasticsearch
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+    spec:
+      containers:
+        - name: elasticsearch
+          image: docker.elastic.co/elasticsearch/elasticsearch:8.0.0
+          ports: 
+            - containerPort: 9200
+            - containerPort: 9300
+          env:
+            - name: discovery.type
+              value: single-node
+            - name: xpack.security.enabled
+              value: "false"
+            # - name: ES_JAVA_OPTS
+            #   value: " -Xms256m -Xmx256m"
+          volumeMounts:
+            - name: elasticsearch
+              mountPath: /usr/share/elasticsearch/data
+  volumeClaimTemplates:
+    - metadata:
+        name: elasticsearch
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "standard"
+        resources:
+          requests:
+            storage: 1Gi
+
+
+--- 
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: stateful
+  name: elasticsearch
+spec:
+  selector:
+    app: elasticsearch
+  ports:
+  - name: p1
+    protocol: TCP
+    port: 9200
+    targetPort: 9200
+  - name: p2
+    protocol: TCP
+    port: 9300
+    targetPort: 9300
+

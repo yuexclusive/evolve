@@ -1,0 +1,117 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cache-deployment-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cache
+  template:
+    metadata:
+      labels:
+        app: cache
+        version: v1.0.1
+    spec:
+      containers:
+        - name: cache
+          image: yuexclusive/cache:latest
+          ports:
+            - containerPort: 8080
+            - containerPort: 8081
+          volumeMounts:
+            - name: config-volume
+              mountPath: /app/config.toml
+              subPath: config.toml
+            - name: log
+              mountPath: /app/log
+
+        - name: filebeat
+          image: docker.elastic.co/beats/filebeat:8.0.0
+          volumeMounts:
+            - name: config-volume
+              mountPath: /usr/share/filebeat/filebeat.yml
+              subPath: filebeat.yml
+            - name: log
+              mountPath: /usr/share/filebeat/files
+            
+      volumes:
+        - name: config-volume
+          configMap:
+            name: cache-configmap
+        - name: log
+          emptyDir: {}
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cache-deployment-v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cache
+  template:
+    metadata:
+      labels:
+        app: cache
+        version: v1.0.2
+    spec:
+      containers:
+        - name: cache
+          image: yuexclusive/cache:latest
+          ports:
+            - containerPort: 8080
+            - containerPort: 8081
+          volumeMounts:
+            - name: config-volume
+              mountPath: /app/config.toml
+              subPath: config.toml
+            - name: log
+              mountPath: /app/log
+
+        - name: filebeat
+          image: docker.elastic.co/beats/filebeat:8.0.0
+          volumeMounts:
+            - name: config-volume
+              mountPath: /usr/share/filebeat/filebeat.yml
+              subPath: filebeat.yml
+            - name: log
+              mountPath: /usr/share/filebeat/files
+            
+      volumes:
+        - name: config-volume
+          configMap:
+            name: cache-configmap
+        - name: log
+          emptyDir: {}
+      
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: cache
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: cache
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: cache-grpc
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8081
+  selector:
+    app: cache

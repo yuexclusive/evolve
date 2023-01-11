@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: etcd-deployment
+spec:
+  selector:
+    matchLabels:
+      app: etcd
+  template:
+    metadata:
+      labels:
+        app: etcd
+    spec:
+      containers:
+        - name: etcd
+          image: bitnami/etcd:latest
+          ports: 
+            - containerPort: 2379
+            - containerPort: 2380
+          env:
+            - name: ALLOW_NONE_AUTHENTICATION
+              value: "yes"
+            - name: ETCD_ADVERTISE_CLIENT_URLS
+              value: "http://etcd:2379"
+          volumeMounts:
+            - name: v1
+              mountPath: /opt/bitnami/etcd/data
+      volumes:
+        - name: v1
+          hostPath: 
+            path: /Users/yu/docker_volumes/etcd
+            type: DirectoryOrCreate
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: etcd-service
+spec:
+  selector:
+    app: etcd
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 30004
+      targetPort: 2379
+      nodePort: 30004

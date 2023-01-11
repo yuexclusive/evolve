@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: stateful
+  name: pulsar
+spec:
+  serviceName: "pulsar"
+  selector:
+    matchLabels:
+      app: pulsar
+  template:
+    metadata:
+      labels:
+        app: pulsar
+    spec:
+      containers:
+        - name: pulsar
+          image: apachepulsar/pulsar:latest
+          ports:
+            - containerPort: 6650
+            # - containerPort: 8080
+          command: ["bin/pulsar", "standalone"]
+          volumeMounts:
+            - name: pulsar
+              mountPath: /pulsar/data
+  volumeClaimTemplates:
+    - metadata:
+        name: pulsar
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: "standard"
+        resources:
+          requests:
+            storage: 1Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: stateful
+  name: pulsar
+spec:
+  selector:
+    app: pulsar
+  ports:
+    - name: p1
+      protocol: TCP
+      port: 6650
+      targetPort: 6650

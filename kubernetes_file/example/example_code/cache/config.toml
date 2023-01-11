@@ -1,0 +1,40 @@
+[config]
+name = "example.srv"
+host = ""
+port = "8080"
+
+[config.postgre]
+address = "host=127.0.0.1 port=5432 user=postgres password=123456 sslmode=disable dbname=evolve"
+
+[config.es]
+address = "http://127.0.0.1:9200"
+
+[config.etcd]
+address = ["127.0.0.1:2379"]
+lease = 5
+
+[config.jaeger]
+address = "127.0.0.1:6831"
+
+[config.log]
+path = "./log"
+mode = "develop"
+
+[config.mongo]
+address = "127.0.0.1:27017"
+
+[config.nats]
+address = "127.0.0.1:4222"
+
+
+[config.redis]
+address = "127.0.0.1:6379"
+cachedb = ""
+password = ""
+poolSize = ""
+
+[config.tls]
+caCertFile = "/Users/liuyu/golang/utils/ssl/server_ca_cert.pem"
+certFile = "/Users/liuyu/golang/utils/ssl/server_cert.pem"
+keyFile = "/Users/liuyu/golang/utils/ssl/server_key.pem"
+serverNameOverride = "test.example.com"

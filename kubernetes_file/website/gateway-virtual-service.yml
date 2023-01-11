@@ -1,0 +1,18 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: website-gateway-virtual-service
+spec:
+  hosts:
+    - "yuexclusive.top"
+  gateways:
+    - website-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            port:
+              number: 80
+            host: website

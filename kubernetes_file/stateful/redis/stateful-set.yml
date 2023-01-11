@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: stateful
+  name: redis
+spec:
+  serviceName: "redis"
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:latest
+          ports: 
+            - containerPort: 6379
+          command: ["redis-server"]
+          volumeMounts:
+            - name: redis
+              mountPath: /data
+  volumeClaimTemplates:
+    - metadata:
+        name: redis
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "standard"
+        resources:
+          requests:
+            storage: 1Gi
