@@ -4,5 +4,5 @@ dist
 public
 .vscode
 .tmp
-.openapi
+openapi_cli
 .DS_Store

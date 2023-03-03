@@ -8,6 +8,9 @@ kind create cluster --config=kind.yaml
 
 # kubectl apply -f metrics-server-components.yaml
 
+# arm for istio
+istioctl operator init --hub=docker.io/querycapistio --tag=1.13.3
+
 # istio
 istioctl install -f ./istio.yaml -y
 
