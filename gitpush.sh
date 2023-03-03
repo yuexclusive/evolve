@@ -1,0 +1,1 @@
+for item in "evolve_backend","evolve_frontend_admin","evolve_book","evolve_website","kuberne"
