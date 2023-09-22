@@ -1,9 +1,6 @@
 [submodule "evolve_backend"]
 path = evolve_backend
 url = https://github.com/yuexclusive/evolve_backend.git
-[submodule "evolve_frontend_admin"]
-path = evolve_frontend_admin
-url = https://github.com/yuexclusive/evolve_frontend_admin.git
 [submodule "evolve_book"]
 path = evolve_book
 url = https://github.com/yuexclusive/evolve_book.git
