@@ -329,7 +329,7 @@ COPY public.permission_role_map (id, permission_code, role_id) FROM stdin;
 --
 -- Data for Name: role; Type: TABLE DATA; Schema: public; Owner: postgres
 --
-
+    
 COPY public.role (id, name, description, created_at, updated_at, deleted_at) FROM stdin;
 1	adminstrator		2022-07-05 02:11:05.734+00	\N	\N
 \.

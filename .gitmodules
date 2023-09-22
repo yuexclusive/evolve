@@ -10,3 +10,5 @@ url = https://github.com/yuexclusive/evolve_book.git
 [submodule "evolve_website"]
 path = evolve_website
 url = https://github.com/yuexclusive/evolve_website.git
+path = evolve_tauri
+url = https://github.com/yuexclusive/evolve_tauri.git

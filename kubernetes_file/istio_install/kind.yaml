@@ -37,6 +37,7 @@ nodes:
         hostPort: 9092
         listenAddress: "0.0.0.0"
         protocol: TCP
+        # for mysql
       - containerPort: 30707
         hostPort: 3306
         listenAddress: "0.0.0.0"
