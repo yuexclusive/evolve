@@ -4,7 +4,7 @@
 # Build cmd: docker build --no-cache . -t nushell-latest
 # Other tags: nushell/alpine-nu:latest, nushell
 FROM yuexclusive/alpine:latest
-ARG NU_DOWNLOAD_URL="https://github.com/nushell/nushell/releases/download/0.81.0/nu-0.81.0-x86_64-unknown-linux-musl.tar.gz"
+ARG NU_DOWNLOAD_URL="https://github.com/nushell/nushell/releases/download/0.86.0/nu-0.86.0-x86_64-unknown-linux-musl.tar.gz"
 
 LABEL maintainer=nushell
 

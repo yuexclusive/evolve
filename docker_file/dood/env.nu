@@ -1,6 +1,6 @@
 # Nushell Environment Config File
 #
-# version = "0.86.1"
+# version = "0.87.2"
 
 def create_left_prompt [] {
     let home =  $nu.home-path
@@ -99,3 +99,7 @@ $env.NU_PLUGIN_DIRS = [
 
 # To add entries to PATH (on Windows you might use Path), you can use the following pattern:
 # $env.PATH = ($env.PATH | split row (char esep) | prepend '/some/path')
+
+# $env.EDITOR = "code"
+
+# source /Users/yu/nushell/env.nu

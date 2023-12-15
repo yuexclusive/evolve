@@ -27,6 +27,9 @@ spec:
             - mountPath: /docker-entrypoint-initdb.d/evolve.sql
               name: config-volume
               subPath: evolve.sql
+            - mountPath: /etc/mysql/conf.d/default_auth.cnf ## path to mount file
+              name: config-volume ## specify volume name
+              subPath: default_auth 
       volumes:
         - name: config-volume
           configMap: 

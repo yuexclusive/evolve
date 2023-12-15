@@ -7,3 +7,6 @@ data:
   evolve.sql: |
     drop database if exists evolve;
     create database evolve;
+  default_auth: |
+    [mysqld]
+    default_authentication_plugin= mysql_native_password
