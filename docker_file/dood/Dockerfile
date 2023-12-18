@@ -4,7 +4,7 @@
 # Build cmd: docker build --no-cache . -t nushell-latest
 # Other tags: nushell/alpine-nu:latest, nushell
 FROM docker:cli
-ARG NU_DOWNLOAD_URL="https://github.com/nushell/nushell/releases/download/0.87.1/nu-0.87.1-x86_64-unknown-linux-musl.tar.gz"
+ARG NU_DOWNLOAD_URL="https://github.com/nushell/nushell/releases/download/0.88.1/nu-0.88.1-x86_64-unknown-linux-musl.tar.gz"
 
 COPY ./env.nu /root/.config/nushell/env.nu
 COPY ./config.nu /root/.config/nushell/config.nu
@@ -21,5 +21,11 @@ RUN echo '/usr/bin/nu' >> /etc/shells \
     && rm -rf /tmp/*
 
 RUN apk add zip
+
+RUN apk add unzip
+
+run apk add tzdata
+run ln /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+run echo "Asia/Shanghai" > /etc/timezone
 
 WORKDIR /work
