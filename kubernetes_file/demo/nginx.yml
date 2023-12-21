@@ -4,7 +4,7 @@ metadata:
   name: nginx
   namespace: demo
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: nginx
@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: yuexclusive/yew_app:latest
+          image: nginx:latest
           ports:
             - containerPort: 80

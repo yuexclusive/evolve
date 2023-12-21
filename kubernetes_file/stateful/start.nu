@@ -10,7 +10,7 @@ def main [
         # start
         match $item {
             "fluvio" => {
-                sh -c 'fluvio cluster start --namespace fluvio 2>/dev/null'
+                ^fluvio cluster start --k8 --namespace fluvio
                 $item
             } ,
             _ => {
@@ -32,4 +32,9 @@ def main [
         }
         print $"($item) start success!"
     }
+
+    ^kubectl cp $"postgres/evolve.sql" stateful/postgres-0:evolve.sql
+    bash -c "kubectl exec -it -n stateful postgres-0 -- bash <<EOF
+psql -U postgres evolve<evolve.sql
+EOF"
 }

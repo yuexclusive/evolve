@@ -29,4 +29,4 @@ spec:
     - "*.example.com"
     tls:
       mode: SIMPLE
-      credentialName: -2 # must be the same as secret
+      credentialName: test-credential-2 # must be the same as secret
