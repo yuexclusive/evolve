@@ -30,11 +30,14 @@ def main [
             }
             sleep 1sec
         }
+
+        if $item == "postgres" {
+            ^kubectl cp $"postgres/evolve.sql" stateful/postgres-0:evolve.sql
+            bash -c "kubectl exec -it -n stateful postgres-0 -- bash <<EOF
+            psql -U postgres evolve<evolve.sql
+            EOF"
+        }
+
         print $"($item) start success!"
     }
-
-    ^kubectl cp $"postgres/evolve.sql" stateful/postgres-0:evolve.sql
-    bash -c "kubectl exec -it -n stateful postgres-0 -- bash <<EOF
-psql -U postgres evolve<evolve.sql
-EOF"
 }

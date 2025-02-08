@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: mysql
-          image: mysql:latest
+          image: bitnami/mysql
           ports:
             - containerPort: 3306
           env:

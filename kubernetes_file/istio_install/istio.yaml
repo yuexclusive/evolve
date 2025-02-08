@@ -30,8 +30,8 @@ spec:
                 port: 7700
                 name: meilisearch
               - nodePort: 30706
-                port: 9092
-                name: kafka
-              - nodePort: 30707
                 port: 3306
                 name: mysql
+              - nodePort: 30707
+                port: 9092
+                name: kafka

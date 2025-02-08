@@ -32,14 +32,14 @@ nodes:
         hostPort: 7700
         listenAddress: "0.0.0.0"
         protocol: TCP
-        # for kafka
+        # for mysql
       - containerPort: 30706
-        hostPort: 9092
+        hostPort: 3306
         listenAddress: "0.0.0.0"
         protocol: TCP
-        # for mysql
+        # for kafka
       - containerPort: 30707
-        hostPort: 3306
+        hostPort: 9092
         listenAddress: "0.0.0.0"
         protocol: TCP
         # for fluvio
